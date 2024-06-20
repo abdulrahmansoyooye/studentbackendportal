@@ -11,14 +11,11 @@ import path from "path";
 import { register } from "./controllers/auth.js";
 import authRoutes from "./routes/auth.js";
 import userRoutes from "./routes/users.js";
-import postRoutes from "./routes/posts.js";
+import idCardRoutes from "./routes/IdCard.js";
 import { verifyToken } from "./middlewares/auth.js";
-import { createPost } from "./controllers/posts.js";
 
-import { users } from "./data/index.js";
-import { posts } from "./data/index.js";
-import User from "./models/User.js";
-import Post from "./models/Post.js";
+
+import { createIdCard } from "./controllers/IdCard.js";
 // CONFIGURATIONS
 const app = express();
 const __filename = fileURLToPath(import.meta.url);
@@ -45,12 +42,12 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 // Route with files
-app.post("/auth/register", upload.single("picture"), register);
-app.post("/posts", verifyToken, upload.single("picture"), createPost);
+app.post("/auth/register", upload.single("photo"), register);
+app.post("/createId", verifyToken, createIdCard);
 // Routes
 app.use("/auth", authRoutes);
 app.use("/users", userRoutes);
-app.use("/posts", postRoutes);
+app.use("/IdCard", idCardRoutes);
 // MOGOOSE SETUP
 const PORT = process.env.PORT || 6001;
 mongoose

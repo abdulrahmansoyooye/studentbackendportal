@@ -1,42 +1,45 @@
 import mongoose from "mongoose";
 const UserSchema = new mongoose.Schema(
   {
-    firstName: {
+    fullName: {
       type: String,
       required: true,
-      min: 2,
-      max: 50,
     },
-    lastName: {
+    matricNumber: {
       type: String,
       required: true,
-      min: 2,
-      max: 50,
     },
     email: {
       type: String,
       required: true,
-      min: 2,
-      max: 50,
+
       unique: true,
+    },
+    faculty: {
+      type: String,
+      required: true,
+    },
+    department: {
+      type: String,
+      required: true,
+    },
+    gender: {
+      type: String,
+      required: true,
+    },
+    level: {
+      type: String,
+      required: true,
+    },
+    photo: {
+      type: String,
+      default: "",
     },
     password: {
       type: String,
       required: true,
-      min: 2,
     },
-    picturePath: {
-      type: String,
-      default: "",
-    },
-    friends: {
-      type: Array,
-      default: [],
-    },
-    location: String,
-    occupation: String,
-    viewedProfile: Number,
-    impression: Number,
+  
   },
   { timestamps: true }
 );
