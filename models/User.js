@@ -12,8 +12,6 @@ const UserSchema = new mongoose.Schema(
     email: {
       type: String,
       required: true,
-
-      unique: true,
     },
     faculty: {
       type: String,
@@ -39,7 +37,6 @@ const UserSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-  
   },
   { timestamps: true }
 );

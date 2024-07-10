@@ -50,7 +50,7 @@ export const register = async (req, res) => {
 export const LOGIN = async (req, res) => {
   try {
     const { matricNumber, password } = req.body;
-    const user = await User.findOne({ matricNumber: matricNumber } );
+    const user = await User.findOne({ matricNumber: matricNumber });
     if (!user) return res.status(400).json({ message: "User does not exist" });
 
     const isMatch = await bcrypt.compare(password, user.password);
@@ -60,7 +60,7 @@ export const LOGIN = async (req, res) => {
     } else {
       const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
 
-      res.status(200).json({ token, user });
+      res.status(200).json(token, user._id);
     }
   } catch (err) {
     res.status(500).json({ error: err.message });
