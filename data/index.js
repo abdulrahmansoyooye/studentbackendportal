@@ -1,6 +1,6 @@
 export const AllUsersData = [
   {
-    fullName: "test",
+    fullName: "abdulrahman",
     department: "me",
     matricNumber: 14561,
   },
