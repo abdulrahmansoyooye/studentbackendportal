@@ -23,6 +23,7 @@ export const getuserIdCard = async (req, res) => {
   try {
     const foundIdCard = await IdCard.findOne({ userId: id });
 
+    if (!foundIdCard) return res.status(202).json("Your Id Card is Pending");
     res.status(200).json(foundIdCard);
   } catch (err) {
     res.status(500).json({ message: err.message });

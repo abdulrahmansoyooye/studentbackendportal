@@ -47,7 +47,7 @@ app.post("/createId", verifyToken, createIdCard);
 // Routes
 app.use("/auth", authRoutes);
 app.use("/users", userRoutes);
-app.use("/IdCard", idCardRoutes);
+app.use("/idCard", idCardRoutes);
 // MOGOOSE SETUP
 const PORT = process.env.PORT || 6001;
 mongoose

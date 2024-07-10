@@ -2,7 +2,7 @@ import User from "../models/User.js";
 export const getUser = async (req, res) => {
   try {
     const { id } = req.params;
-    const user = await User.findById(id);
+    const user = await User.findById(id).select("-password -gender");
 
     res.status(200).json(user);
   } catch (err) {
@@ -12,7 +12,7 @@ export const getUser = async (req, res) => {
 export const getAllUsers = async (req, res) => {
   try {
     const { id } = req.params;
-    const users = await User.find({ id });
+    const users = await User.find({ id }).select("-password -gender");
 
     res.status(200).json(users);
   } catch (err) {
@@ -27,21 +27,17 @@ export const EditUser = async (req, res) => {
     department,
     faculty,
     email,
-    gender,
     level,
-    photo,
   } = req.body;
   try {
     const { id } = req.params;
-    const users = await User.findByIdAndUpdate(id,{
+    const users = await User.findByIdAndUpdate(id, {
       fullName,
       matricNumber,
       department,
       faculty,
       email,
-      gender,
       level,
-      photo,
     });
 
     res.status(200).json(users);
