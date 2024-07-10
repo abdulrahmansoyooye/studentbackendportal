@@ -20,9 +20,9 @@ export const register = async (req, res) => {
       photo,
     } = req.body;
 
-    if (!verifyStudent(fullName)) {
-      return res.status(404).json({ message: "This user is not a student" });
-    }
+    // if (!verifyStudent(fullName)) {
+    //   return res.status(404).json({ message: "This user is not a student" });
+    // }
     const salt = await bcrypt.genSalt();
     const passwordHash = await bcrypt.hash(password, salt);
 
