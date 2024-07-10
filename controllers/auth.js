@@ -4,9 +4,9 @@ import User from "../models/User.js";
 import { AllUsersData } from "../data/index.js";
 
 export const register = async (req, res) => {
-  const verifyStudent = (fullName) => {
-    return AllUsersData.some((user) => user.fullName === fullName);
-  };
+  // const verifyStudent = (fullName) => {
+  //   return AllUsersData.some((user) => user.fullName === fullName);
+  // };
   try {
     const {
       fullName,
