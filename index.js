@@ -14,7 +14,6 @@ import userRoutes from "./routes/users.js";
 import idCardRoutes from "./routes/IdCard.js";
 import { verifyToken } from "./middlewares/auth.js";
 
-
 import { createIdCard } from "./controllers/IdCard.js";
 // CONFIGURATIONS
 const app = express();
@@ -43,11 +42,11 @@ const upload = multer({ storage: storage });
 
 // Route with files
 app.post("/auth/register", upload.single("photo"), register);
-app.post("/createId", verifyToken, createIdCard);
+app.post("/createId", createIdCard);
 // Routes
 app.use("/auth", authRoutes);
 app.use("/users", userRoutes);
-app.use("/idCard", idCardRoutes);
+app.use("/idcard", idCardRoutes);
 // MOGOOSE SETUP
 const PORT = process.env.PORT || 6001;
 mongoose

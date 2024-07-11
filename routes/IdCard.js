@@ -7,8 +7,8 @@ import {
 } from "../controllers/IdCard.js";
 const router = express.Router();
 // READ
-router.get("/:id", verifyToken, getuserIdCard);
-router.get("/:id/Edit", verifyToken, EditIdCard);
-router.get("/", verifyToken, getAllIdCards);
+router.get("/:id", getuserIdCard);
+router.get("/:id/edit", verifyToken, EditIdCard);
+router.get("/", getAllIdCards);
 
 export default router;

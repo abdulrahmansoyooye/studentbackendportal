@@ -5,12 +5,15 @@ export const createIdCard = async (req, res) => {
   try {
     const { userId } = req.body;
     const user = await User.findById(userId);
+    if (!user) return res.status(404).json("User wasn't found");
 
     const newIdCard = new IdCard({
       userId,
       fullName: user.fullName,
       matricNimber: user.matricNumber,
       department: user.department,
+      level: user.level,
+      email: user.email,
     });
     await newIdCard.save();
     res.status(201).json(newIdCard);
