@@ -13,12 +13,12 @@ export const getUser = async (req, res) => {
 export const getAllUsers = async (req, res) => {
   try {
     const users = await User.find({}).select("-password -gender");
-    // const idCards = await IdCard.find({});
-    // const idcardUserIds = idCards.map((card) => card.userId);
-    // const allusers = users.filter((user) => idcardUserIds.includes(user._id));
-    // console.log(allusers);
-
-    res.status(200).json(users);
+    const idCards = await IdCard.find({});
+    const idCardUserIds = idCards.map((card) => card.userId);
+    const allusers = users.filter(
+      ({ _id }) => !idCardUserIds.includes(_id.toString())
+    );
+    res.status(200).json(allusers);
   } catch (err) {
     res.status(404).json({ message: err.message });
   }
