@@ -18,7 +18,7 @@ export const getAllUsers = async (req, res) => {
     const allusers = users.filter(
       ({ _id }) => !idCardUserIds.includes(_id.toString())
     );
-    res.status(200).json(allusers);
+    res.status(200).json(allusers.reverse());
   } catch (err) {
     res.status(404).json({ message: err.message });
   }
