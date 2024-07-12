@@ -14,6 +14,7 @@ export const createIdCard = async (req, res) => {
       department: user.department,
       level: user.level,
       email: user.email,
+      photo: user.photo,
     });
     await newIdCard.save();
     res.status(201).json(newIdCard);

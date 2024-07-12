@@ -26,6 +26,10 @@ const idCardSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    photo: {
+      type: String,
+      required: true,
+    },
   },
   { timestamps: true }
 );
