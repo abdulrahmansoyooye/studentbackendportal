@@ -4,9 +4,9 @@ import User from "../models/User.js";
 import { AllUsersData } from "../data/index.js";
 
 export const register = async (req, res) => {
-  // const verifyStudent = (fullName) => {
-  //   return AllUsersData.some((user) => user.fullName === fullName);
-  // };
+  const verifyStudent = (fullName) => {
+    return AllUsersData.some((user) => user.fullName === fullName);
+  };
   try {
     const {
       fullName,
@@ -20,9 +20,9 @@ export const register = async (req, res) => {
       photo,
     } = req.body;
 
-    // if (!verifyStudent(fullName)) {
-    //   return res.status(404).json({ message: "This user is not a student" });
-    // }
+    if (!verifyStudent(fullName)) {
+      return res.status(404).json({ message: "This user is not a student" });
+    }
     const salt = await bcrypt.genSalt();
     const passwordHash = await bcrypt.hash(password, salt);
 

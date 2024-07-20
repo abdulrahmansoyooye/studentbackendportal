@@ -1,43 +1,17 @@
 export const AllUsersData = [
   {
-    fullName: "abdulrahman",
-    department: "me",
-    matricNumber: 14561,
+    fullName: "Kareem Ogedegbe",
   },
   {
-    fullName: "Steve",
-    department: "Ralph",
-    matricNumber: 12351,
-    impressions: 55555,
+    fullName: "Quinlan Adewusi",
   },
   {
-    fullName: "Some",
-    department: "Guy",
-    matricNumber: 45468,
+    fullName: "Cyrus Onyeama",
   },
   {
-    fullName: "Whatcha",
-    department: "Doing",
-    matricNumber: 41024,
+    fullName: "Orson Olunloyo",
   },
   {
-    fullName: "Jane",
-    department: "Doe",
-    matricNumber: 40212,
-  },
-  {
-    fullName: "Harvey",
-    department: "Dunn",
-    matricNumber: 976,
-  },
-  {
-    fullName: "Carly",
-    department: "Vowel",
-    matricNumber: 1510,
-  },
-  {
-    fullName: "Jessica",
-    department: "Dunn",
-    matricNumber: 19420,
+    fullName: "Prescott Anjorin",
   },
 ];
