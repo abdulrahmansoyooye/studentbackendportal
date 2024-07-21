@@ -42,11 +42,12 @@ const upload = multer({ storage: storage });
 
 // Route with files
 app.post("/auth/register", upload.single("photoFile"), register);
+app.use("/idcard", upload.single("qrcodeFile"), idCardRoutes);
+
 app.post("/createId", createIdCard);
 // Routes
 app.use("/auth", authRoutes);
 app.use("/users", userRoutes);
-app.use("/idcard", idCardRoutes);
 // MOGOOSE SETUP
 const PORT = process.env.PORT || 6001;
 mongoose

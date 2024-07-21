@@ -30,6 +30,11 @@ const idCardSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+
+    qrcode: {
+      type: String,
+      required: true,
+    },
   },
   { timestamps: true }
 );

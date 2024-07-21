@@ -1,12 +1,12 @@
 import IdCard from "../models/IdCard.js";
 import User from "../models/User.js";
-
+import QRCode from "qrcode";
 export const createIdCard = async (req, res) => {
   try {
     const { userId } = req.body;
     const user = await User.findById(userId);
     if (!user) return res.status(404).json("User wasn't found");
-
+    const qrcodeUrl = await QRCode.toDataURL("data");
     const newIdCard = new IdCard({
       userId,
       fullName: user.fullName,
@@ -15,7 +15,9 @@ export const createIdCard = async (req, res) => {
       level: user.level,
       email: user.email,
       photo: user.photo,
+      qrcode: qrcodeUrl,
     });
+
     await newIdCard.save();
     res.status(201).json(newIdCard);
   } catch (err) {
