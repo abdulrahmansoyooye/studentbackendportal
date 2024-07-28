@@ -35,6 +35,17 @@ export const getuserIdCard = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
+export const getuserIdCardDetils = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const foundIdCard = await IdCard.findOne({ userId: id });
+
+    if (!foundIdCard) return res.status(202).json(foundIdCard);
+    res.status(200).json(foundIdCard);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
 export const getAllIdCards = async (req, res) => {
   try {
     const IdCards = await IdCard.find({});
