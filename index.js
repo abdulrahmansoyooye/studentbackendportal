@@ -27,7 +27,7 @@ app.use(morgan("common"));
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 app.use("/assets", express.static(path.join(__dirname, "public/assets")));
 app.use(cors({
-   origin: "*", // your frontend URL
+   origin: ["https://studentidmanagement.vercel.app","http://localhost:3000","http://adminmanagement.vercel.app/"], // your frontend URL
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true
 }));
