@@ -1,19 +1,21 @@
 import express from "express";
-import { verifyToken } from "../middlewares/auth.js";
 import {
-  getuserIdCard,
+  requestIdCard,
+  getUserIdCard,
   getAllIdCards,
-  EditIdCard,
-  deleteuserId,
-  getuserIdCardDetils,
-} from "../controllers/IdCard.js";
+  approveIdCard,
+  revokeIdCard,
+} from "../controllers/idCardController.js";
+
 const router = express.Router();
-// READ
-router.get("/:id", getuserIdCard);
-router.get("/:id/getdata", getuserIdCardDetils);
-router.get("/:id/edit", verifyToken, EditIdCard);
+
+// STUDENT
+router.post("/request", requestIdCard);
+router.get("/:id", getUserIdCard);
+
+// ADMIN
 router.get("/", getAllIdCards);
-// Delete
-router.delete("/delete/:id", deleteuserId);
+router.patch("/:id/approve", approveIdCard);
+router.patch("/:id/revoke", revokeIdCard);
 
 export default router;
