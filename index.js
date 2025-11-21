@@ -15,6 +15,7 @@ import { verifyToken } from "./middlewares/auth.js";
 
 import { requestIdCard  } from "./controllers/IdCard.js";
 import { mockUsers } from "./data/mockdata.js";
+import User from "./models/User.js";
 // CONFIGURATIONS
 const app = express();
 const __filename = fileURLToPath(import.meta.url);
