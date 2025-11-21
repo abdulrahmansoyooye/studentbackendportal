@@ -8,7 +8,7 @@ export const LOGIN = async (req, res) => {
     const { matricNumber, password } = req.body;
 
     // 1. Find user in mock file
-    const student = User.find({matricNumber})
+    const student = await User.findOne({ matricNumber });
 
     if (!student) {
       return res.status(404).json({ message: "Matric number not recognized" });
