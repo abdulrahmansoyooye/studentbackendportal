@@ -1,11 +1,6 @@
 import express from "express";
-import {
-  requestIdCard,
-  getUserIdCard,
-  getAllIdCards,
-  approveIdCard,
-  revokeIdCard,
-} from "../controllers/idCardController.js";
+import { approveIdCard, getAllIdCards, getUserIdCard, requestIdCard, revokeIdCard } from "../controllers/IdCard";
+
 
 const router = express.Router();
 

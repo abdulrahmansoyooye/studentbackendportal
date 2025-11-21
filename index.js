@@ -15,6 +15,7 @@ import idCardRoutes from "./routes/IdCard.js";
 import { verifyToken } from "./middlewares/auth.js";
 
 import { createIdCard } from "./controllers/IdCard.js";
+import { mockUsers } from "./data/mockdata.js";
 // CONFIGURATIONS
 const app = express();
 const __filename = fileURLToPath(import.meta.url);
@@ -62,7 +63,7 @@ mongoose
   .then(() => {
     app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
 
-    // User.insertMany(users);
+    User.insertMany(mockUsers);
     // Post.insertMany(posts);
   })
   .catch((err) => {
