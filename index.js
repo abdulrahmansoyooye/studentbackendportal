@@ -5,6 +5,7 @@ import cors from "cors";
 import multer from "multer";
 import morgan from "morgan";
 import helmet from "helmet";
+import bcrypt from "bcrypt"
 import dotenv from "dotenv";
 import { fileURLToPath } from "url";
 import path from "path";
@@ -54,17 +55,47 @@ app.use("/auth", authRoutes);
 app.use("/users", userRoutes);
 // MOGOOSE SETUP
 const PORT = process.env.PORT || 6001;
-mongoose
-  .connect(process.env.MONGO_URL, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => {
-    app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
+const startServer = async () => {
+  try {
+    // 🔌 Connect to database
+    await mongoose.connect(process.env.MONGO_URL, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
 
-    // User.insertMany(mockUsers);
-    // Post.insertMany(posts);
-  })
-  .catch((err) => {
-    console.log(`${err}`);
-  });
+    console.log("✅ Connected to MongoDB");
+
+    // 🔐 Hash the shared password ONCE
+    const sharedPassword = mockUsers[0].password;
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(sharedPassword, salt);
+
+    // 🌱 Prepare users with hashed password
+    const usersToInsert = mockUsers.map((user) => ({
+      ...user,
+      password: hashedPassword,
+    }));
+
+    // ❗ Avoid duplicate insert (matric numbers must be unique)
+    const existing = await User.countDocuments();
+
+    if (existing === 0) {
+      await User.insertMany(usersToInsert);
+      console.log("👥 Mock users inserted successfully");
+    } else {
+      console.log("⚠️ Users already exist, skipping insert.");
+    }
+
+    // ▶️ Start the server AFTER database operations are done
+    app.listen(PORT, () => {
+      console.log(`Server running on port ${PORT}`);
+    });
+
+  } catch (err) {
+    console.error("Startup Error:", err.message);
+    process.exit(1);
+  }
+};
+
+// Run the startup function
+startServer();

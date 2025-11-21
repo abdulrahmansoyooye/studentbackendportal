@@ -1,15 +1,14 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import {  mockUsers} from "../data/mockdata.js";
+import User from "../models/User.js";
 
 export const LOGIN = async (req, res) => {
   try {
     const { matricNumber, password } = req.body;
 
     // 1. Find user in mock file
-    const student = mockUsers.find(
-      (u) => u.matricNumber.toLowerCase() === matricNumber.toLowerCase()
-    );
+    const student = User.find({matricNumber})
 
     if (!student) {
       return res.status(404).json({ message: "Matric number not recognized" });
