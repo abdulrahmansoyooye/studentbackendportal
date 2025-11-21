@@ -1,26 +1,44 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import User from "../models/User.js";
-
-// LOGIN
+import {  mockUsers} from "../data/mockdata.js";
 
 export const LOGIN = async (req, res) => {
   try {
     const { matricNumber, password } = req.body;
-    const user = await User.findOne({ matricNumber: matricNumber });
-    if (!user) return res.status(404).json({ message: "User does not exist" });
 
-    const isMatch = await bcrypt.compare(password, user.password);
+    // 1. Find user in mock file
+    const student = mockUsers.find(
+      (u) => u.matricNumber.toLowerCase() === matricNumber.toLowerCase()
+    );
 
-    if (!isMatch) {
-      return res.status(400).json({ message: "Invalid Credentials" });
-    } else {
-      const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
-      const id = user._id;
-
-      res.status(200).json({ token, userId: id });
+    if (!student) {
+      return res.status(404).json({ message: "Matric number not recognized" });
     }
-  } catch (err) {
-    res.status(500).json({ error: err.message });
+
+    // 2. Verify shared password
+    const validPassword = await bcrypt.compare(password, student.password);
+
+    if (!validPassword) {
+      return res.status(401).json({ message: "Invalid login credentials" });
+    }
+
+    // 3. Issue JWT token
+    const token = jwt.sign(
+      { matricNumber: student.matricNumber },
+      process.env.JWT_SECRET,
+      { expiresIn: "7d" }
+    );
+
+    return res.status(200).json({
+      message: "Login successful",
+      token,
+      user: {
+        fullName: student.fullName,
+        matricNumber: student.matricNumber,
+        department: student.department,
+      },
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
 };
