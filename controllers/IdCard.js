@@ -1,114 +1,88 @@
-import IdCard from "../models/IdCard";
-import User from "../models/User";
-
-export const requestIdCard = async (req, res) => {
+import IdCard from "../models/IdCard.js";
+import User from "../models/User.js";
+import QRCode from "qrcode";
+export const createIdCard = async (req, res) => {
   try {
     const { userId, qrCodeImage } = req.body;
-
     const user = await User.findById(userId);
     if (!user) return res.status(404).json("User wasn't found");
-
-    // Prevent duplicate pending/approved cards
-    const existing = await IdCard.findOne({
-      userId,
-      status: { $in: ["pending", "approved"] },
-    });
-
-    if (existing) {
-      return res.status(400).json({
-        message: "You already have a pending or approved ID card.",
-      });
-    }
-
     const qrcodeUrl = await QRCode.toDataURL(qrCodeImage);
-
-    const newIdCard = await IdCard.create({
+    const newIdCard = new IdCard({
       userId,
       fullName: user.fullName,
-      matricNumber: user.matricNumber,
+      matricNimber: user.matricNumber,
       department: user.department,
       level: user.level,
       email: user.email,
       photo: user.photo,
       qrcode: qrcodeUrl,
-      status: "pending",
     });
 
+    await newIdCard.save();
     res.status(201).json(newIdCard);
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    res.status(409).json({ message: err.message });
   }
 };
-
-export const getUserIdCard = async (req, res) => {
+export const getuserIdCard = async (req, res) => {
   const { id } = req.params;
-
   try {
-    const found = await IdCard.findOne({ userId: id });
+    const foundIdCard = await IdCard.findOne({ userId: id });
 
-    if (!found) {
-      return res.status(200).json({ status: "none" });
-    }
-
-    res.status(200).json(found);
+    if (!foundIdCard) return res.status(202).json("Your Id Card is Pending");
+    res.status(200).json(foundIdCard);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
 };
+export const getuserIdCardDetils = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const foundIdCard = await IdCard.findOne({ userId: id });
 
+    if (!foundIdCard) return res.status(202).json(foundIdCard);
+    res.status(200).json(foundIdCard);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
 export const getAllIdCards = async (req, res) => {
   try {
-    const { status } = req.query;
+    const IdCards = await IdCard.find({});
 
-    const query = status ? { status } : {};
-
-    const idCards = await IdCard.find(query).sort({ createdAt: -1 });
-
-    res.status(200).json(idCards);
+    res.status(200).json(IdCards.reverse());
   } catch (err) {
     res.status(404).json({ message: err.message });
   }
 };
 
-
-export const revokeIdCard = async (req, res) => {
+export const EditIdCard = async (req, res) => {
+  const { fullName, matricNumber, department } = req.body;
   try {
     const { id } = req.params;
-
-    const updated = await IdCard.findOneAndUpdate(
+    const users = await IdCard.findOneAndUpdate(
       { userId: id },
-      { status: "revoked" },
-      { new: true }
+      {
+        userId: id,
+        fullName,
+        matricNumber,
+        department,
+      }
     );
 
-    if (!updated) return res.status(404).json("Record not found");
+    res.status(200).json(users);
+  } catch (err) {
+    res.status(404).json({ message: err.message });
+  }
+};
 
-    res.status(200).json({
-      message: "ID card revoked successfully",
-      updated,
-    });
+export const deleteuserId = async (req, res) => {
+  const { id } = req.params;
+  try {
+    await IdCard.deleteOne({ userId: id });
+
+    res.status(200).json({ message: "User was revoked access" });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
 };
-
-
-export const approveIdCard = async (req, res) => {
-  try {
-    const { id } = req.params;
-
-    const updated = await IdCard.findOneAndUpdate(
-      { userId: id },
-      { status: "approved" },
-      { new: true }
-    );
-
-    if (!updated) return res.status(404).json("Record not found");
-
-    res.status(200).json(updated);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-};
-
-
