@@ -1,5 +1,5 @@
 import express from "express";
-import { approveIdCard, getAllIdCards, getUserIdCard, requestIdCard, revokeIdCard } from "../controllers/IdCard";
+import { approveIdCard, getAllIdCards, getUserIdCard, requestIdCard, revokeIdCard } from "../controllers/IdCard.js";
 
 
 const router = express.Router();

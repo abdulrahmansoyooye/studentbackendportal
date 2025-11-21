@@ -8,13 +8,12 @@ import helmet from "helmet";
 import dotenv from "dotenv";
 import { fileURLToPath } from "url";
 import path from "path";
-import { register } from "./controllers/auth.js";
 import authRoutes from "./routes/auth.js";
 import userRoutes from "./routes/users.js";
 import idCardRoutes from "./routes/IdCard.js";
 import { verifyToken } from "./middlewares/auth.js";
 
-import { createIdCard } from "./controllers/IdCard.js";
+import { requestIdCard  } from "./controllers/IdCard.js";
 import { mockUsers } from "./data/mockdata.js";
 // CONFIGURATIONS
 const app = express();
@@ -46,10 +45,9 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 // Route with files
-app.post("/auth/register", upload.single("photoFile"), register);
 app.use("/idcard", upload.single("qrcodeFile"), idCardRoutes);
 
-app.post("/createId", createIdCard);
+app.post("/request", requestIdCard);
 // Routes
 app.use("/auth", authRoutes);
 app.use("/users", userRoutes);
