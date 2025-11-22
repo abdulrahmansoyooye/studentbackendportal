@@ -22,15 +22,13 @@ export const LOGIN = async (req, res) => {
     }
 
     // 3. Issue JWT token
-    const token = jwt.sign(
-      { matricNumber: student.matricNumber },
-      process.env.JWT_SECRET,
-      { expiresIn: "7d" }
-    );
-
+    
+ const token = jwt.sign({ id: student._id }, process.env.JWT_SECRET,{ expiresIn: "7d" });
+      const userId = student._id;
     return res.status(200).json({
       message: "Login successful",
       token,
+      userId,
       user: {
         fullName: student.fullName,
         matricNumber: student.matricNumber,
