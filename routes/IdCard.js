@@ -5,7 +5,7 @@ import { approveIdCard, getAllIdCards, getUserIdCard, requestIdCard, revokeIdCar
 const router = express.Router();
 
 // STUDENT
-router.post("/request", requestIdCard);
+router.post("/request/:id", requestIdCard);
 router.get("/:id", getUserIdCard);
 
 // ADMIN

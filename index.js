@@ -49,7 +49,7 @@ const upload = multer({ storage: storage });
 // Route with files
 app.use("/idcard", upload.single("qrcodeFile"), idCardRoutes);
 
-app.post("/request", requestIdCard);
+app.post("/request/:id", requestIdCard);
 // Routes
 app.use("/auth", authRoutes);
 app.use("/users", userRoutes);
