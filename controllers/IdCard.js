@@ -3,14 +3,14 @@ import User from "../models/User.js";
 
 export const requestIdCard = async (req, res) => {
   try {
-    const { userId, qrCodeImage } = req.body;
-
-    const user = await User.findById(userId);
+    const {  qrCodeImage } = req.body;
+    const {id}  = req.params
+    const user = await User.findById(id);
     if (!user) return res.status(404).json("User wasn't found");
 
     // Prevent duplicate pending/approved cards
     const existing = await IdCard.findOne({
-      userId,
+      userId:id,
       status: { $in: ["pending", "approved"] },
     });
 
@@ -23,7 +23,7 @@ export const requestIdCard = async (req, res) => {
     const qrcodeUrl = await QRCode.toDataURL(qrCodeImage);
 
     const newIdCard = await IdCard.create({
-      userId,
+      userId:id,
       fullName: user.fullName,
       matricNumber: user.matricNumber,
       department: user.department,
