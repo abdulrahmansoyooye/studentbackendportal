@@ -14,7 +14,6 @@ const idCardSchema = new mongoose.Schema(
     level: { type: String, required: true },
     email: { type: String, required: true },
     photo: { type: String, required: true },
-    qrcode: { type: String, required: true },
 
     // NEW FIELD
     status: {

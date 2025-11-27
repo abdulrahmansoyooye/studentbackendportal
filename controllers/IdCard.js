@@ -20,7 +20,6 @@ export const requestIdCard = async (req, res) => {
       });
     }
 
-    const qrcodeUrl = await QRCode.toDataURL(qrCodeImage);
 
     const newIdCard = await IdCard.create({
       userId:id,
@@ -30,7 +29,6 @@ export const requestIdCard = async (req, res) => {
       level: user.level,
       email: user.email,
       photo: user.photo,
-      qrcode: qrcodeUrl,
       status: "pending",
     });
 
