@@ -28,6 +28,7 @@ export const requestIdCard = async (req, res) => {
       department: user.department,
       level: user.level,
       email: user.email,
+      photo: "user.photo",
       status: "pending",
     });
 
