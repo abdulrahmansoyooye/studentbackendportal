@@ -74,3 +74,33 @@ export const revokeIdCard = async (req, res) => {
     res.status(500).json({ message: "Revocation failed" });
   }
 };
+export const getAllIdCards = async (req, res) => {
+  try {
+    const { status } = req.query;
+
+    const query = status ? { status } : {};
+
+    const idCards = await IdCard.find(query).sort({ createdAt: -1 });
+
+    res.status(200).json(idCards);
+  } catch (err) {
+    res.status(404).json({ message: err.message });
+  }
+};
+
+
+export const getUserIdCard = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const found = await IdCard.findOne({ userId: id });
+
+    if (!found) {
+      return res.status(200).json({ status: "none" });
+    }
+
+    res.status(200).json(found);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};

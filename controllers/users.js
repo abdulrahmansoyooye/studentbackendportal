@@ -30,7 +30,7 @@ export const getUser = async (req, res) => {
 /* ==========================
    GET USERS WITHOUT ID CARDS
 ========================== */
-export const getUsers = async (req, res) => {
+export const getAllUsers = async (req, res) => {
   try {
     const page = Math.max(parseInt(req.query.page) || 1, 1);
     const limit = Math.min(parseInt(req.query.limit) || 10, 50);
