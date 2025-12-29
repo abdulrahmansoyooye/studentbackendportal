@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import IdCard from "../models/IdCard.js";
 import User from "../models/User.js";
 import QRCode from "qrcode";
@@ -5,14 +6,15 @@ import QRCode from "qrcode";
 export const requestIdCard = async (req, res) => {
   try {
     const { id } = req.params;
-    const { qrCodeImage } = req.body;
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return res.status(400).json({ message: "Invalid user ID" });
     }
 
     const user = await User.findById(id);
-    if (!user) return res.status(404).json({ message: "User not found" });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
 
     const existing = await IdCard.findOne({
       userId: id,
@@ -25,24 +27,54 @@ export const requestIdCard = async (req, res) => {
       });
     }
 
-    const qrcode = await QRCode.toDataURL(qrCodeImage);
+    /**
+     * ✅ STEP 1: Build QR payload
+     * Minimal, structured, verifiable
+     */
+    const qrPayload = {
+      userId: user._id,
+      fullName: user.fullName,
+      matricNumber: user.matricNumber,
+      department: user.department,
+      level: user.level,
+      issuedAt: new Date().toISOString(),
+    };
 
+    /**
+     * ✅ STEP 2: Convert payload → QR image
+     */
+    const qrCodeImage = await QRCode.toDataURL(
+      JSON.stringify(qrPayload),
+      {
+        errorCorrectionLevel: "H",
+        type: "image/png",
+        margin: 2,
+        width: 300,
+      }
+    );
+
+    /**
+     * ✅ STEP 3: Save card
+     */
     const card = await IdCard.create({
-      userId: id,
+      userId: user._id,
       fullName: user.fullName,
       matricNumber: user.matricNumber,
       department: user.department,
       level: user.level,
       email: user.email,
       photo: user.photo,
-      qrcode,
+      qrcode: qrCodeImage,
+      status: "pending",
     });
 
     res.status(201).json(card);
   } catch (err) {
+    console.error(err);
     res.status(500).json({ message: "ID request failed" });
   }
 };
+
 export const approveIdCard = async (req, res) => {
   try {
     const card = await IdCard.findByIdAndUpdate(
