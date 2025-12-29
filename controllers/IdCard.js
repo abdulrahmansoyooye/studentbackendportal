@@ -63,7 +63,7 @@ export const requestIdCard = async (req, res) => {
       department: user.department,
       level: user.level,
       email: user.email,
-      photo: user.photo,
+      photo:`https://avatar.iran.liara.run/username?username=${user.fullName}`,
       qrcode: qrCodeImage,
       status: "pending",
     });
