@@ -47,6 +47,7 @@ const allowedOrigins = [
   "https://studentidmanagement.vercel.app",
   "https://adminmanagement.vercel.app",
   "http://localhost:3000",
+  "http://localhost:3001",
 ];
 
 app.use(
